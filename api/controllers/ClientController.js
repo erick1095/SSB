@@ -1,22 +1,21 @@
 /**
- * MaletinController
+ * ClientController
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
 module.exports = {
-  //Este metodo es usado para buscar todos los maletines que estan registrados en el sistema pero solo del usuario que esta logueado
   get: function(req,res){
-    Maletin.find({where:{owner:req.session.userId}}).populate("owner")
-      .then(function(Maletines){
-          if(!Maletines || Maletines.lenght===0){
+    Client.find({where:{owner:req.session.userId}}).populate("owner")
+      .then(function(Clients){
+          if(!Clients || Clients.lenght===0){
             return res.send({
               "success":false,
               "message":"No records found"
             })
           }
-          return res.view("Maletin/index",{Maletines:Maletines})
+          return res.view("Client/index",{Clients:Clients})
       })
       .catch(function(err){
         sails.log.debug(err);
@@ -25,16 +24,17 @@ module.exports = {
         })
       })
   },
-  //Este metodo se usa para crear nuevos maletines
   create:function(req,res){
     sails.log.debug(req)
-    var maletinObject = {
+    var clientObject = {
       name: req.param("name"),
-      status:"available",
+      lastName: req.param("lastName"),
+      phoneNumber: req.param("phoneNumber"),
+      email: req.param("email"),
       owner:req.session.userId
     }
-    Maletin.create(maletinObject).then(function(Maletin){
-      return res.redirect("/api/Maletines")
+    Client.create(clientObject).then(function(Client){
+      return res.redirect("/api/Clients")
     })
     .catch(function(err){
       sails.log.debug(err)
@@ -44,16 +44,18 @@ module.exports = {
       })
     })
   },
-  //Con este metodo actualizamos los maletines creados
   update:function(req,res){
     sails.log.debug(req.param("id"))
-    var newMaletinObject = {
+    var newClientObject = {
       name: req.param("name"),
+      lastName: req.param("lastName"),
+      phoneNumber: req.param("phoneNumber"),
+      email: req.param("email"),
       owner:req.session.userId
     }
-    sails.log.debug(newMaletinObject)
-    Maletin.update(req.param("id"),newMaletinObject).then(function (Maletin) {
-        return res.redirect("/api/Maletines")
+    sails.log.debug(newClientObject)
+    Client.update(req.param("id"),newClientObject).then(function (Client) {
+        return res.redirect("/api/Clients")
       })
       .catch(function (err) {
         sails.log.debug(err)
@@ -65,16 +67,14 @@ module.exports = {
     
     
   },
-  //este metodo te redirecciona a una vista donde puedes editar el maletin seleccionado
   updateGet: function(req,res){
-    Maletin.findOne({id:req.param("id")}).then(function(Maletin){
-       return res.view("Maletin/update",{Maleta:Maletin})
+    Client.findOne({id:req.param("id")}).then(function(Client){
+       return res.view("Client/update",{Client:Client})
     })
   },
-  //Este metodo elimina el maletin seleccionado
   delete: function(req,res){
-    Maletin.destroy(req.param("id")).then(function(Maletin){
-      return res.redirect("/api/Maletines")
+    Client.destroy(req.param("id")).then(function(Client){
+      return res.redirect("/api/Clients")
     })
     .catch(function(err){
       sails.log.debug(err)
@@ -84,5 +84,6 @@ module.exports = {
         })
     })
   }
+
 };
 

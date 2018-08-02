@@ -34,9 +34,22 @@ module.exports.routes = {
   'GET /account/password':   { action: 'account/view-edit-password' },
   'GET /account/profile':    { action: 'account/view-edit-profile' },
 
-  'GET /Simulador':          { view: 'pages/Simulador/simulador' },
+  'GET /api/simulator':      'RouteController.simulator',
+  'GET /Geolocalization':    { view: 'Geolocalization/geolocalization' },
+  'GET /Maletin/create':     { view: 'Maletin/create' },
+  'GET /api/Maletines':      'MaletinController.get', 
+  'GET /api/Maletin/:id':      'MaletinController.updateGet',
+  'GET /api/Maletin/delete/:id':      'MaletinController.delete',
 
+  'GET /Client/create':     { view: 'Client/create' },
+  'GET /api/Clients':      'ClientController.get', 
+  'GET /api/Client/:id':      'ClientController.updateGet',
+  'GET /api/Client/delete/:id':      'ClientController.delete',
 
+  'GET /Route/create':     { view: 'Route/create' },
+  'GET /api/Routes':      'RouteController.get', 
+  'GET /api/Route/:id':      'RouteController.updateGet',
+  'GET /api/Route/delete/:id':      'RouteController.delete',
   //  ╔═╗╔═╗╦  ╔═╗╔╗╔╔╦╗╔═╗╔═╗╦╔╗╔╔╦╗╔═╗
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
   //  ╩ ╩╩  ╩  ╚═╝╝╚╝═╩╝╩  ╚═╝╩╝╚╝ ╩ ╚═╝
@@ -51,6 +64,14 @@ module.exports.routes = {
   'POST  /api/v1/entrance/send-password-recovery-email': { action: 'entrance/send-password-recovery-email' },
   'POST  /api/v1/entrance/update-password-and-login':    { action: 'entrance/update-password-and-login' },
   'POST  /api/v1/deliver-contact-form-message':          { action: 'deliver-contact-form-message' },
+  'POST /api/Maletin/create':      'MaletinController.create',
+  'POST /api/Maletin/:id':      'MaletinController.update',
+
+  'POST /api/Client/create':      'ClientController.create',
+  'POST /api/Client/:id':      'ClientController.update',
+
+  'POST /api/Route/create':      'RouteController.create',
+  'POST /api/Route/:id':      'RouteController.update',
 
 
 

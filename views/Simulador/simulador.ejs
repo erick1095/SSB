@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simulator</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?   
+         v=3.exp&sensor=false&libraries=places"></script>
+    <!--STYLES-->
+    <link rel="stylesheet" href="/dependencies/bootstrap-4/bootstrap-4.css">
+    <link rel="stylesheet" href="/dependencies/font-awesome-4/css/font-awesome.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+  </head>
+   <body">
+      <div class="row" style="margin-top: 50px">
+      <div class="col-md-6" align="center">
+         <div id="mostrarValores" style="text-align: center;overflow-y: scroll;height: 100px; ">
+            <table id="tabla" align="center">
+               <tr>
+                  <th>Speed</th>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <div class="col-md-6" align="center">
+         <div id="chart_div" align="center"/></div>
+      </div>
+      <div class="col-md-12">
+         <div class="col-md-12" style="text-align: center;margin-bottom: 20px;margin-top: 20px;">
+            <select id="start">
+               <option value="">Origin</option>
+               <% _.each(Routes, function (Route) { %>
+                    <option value="<%= Route.origin %>"><%= Route.name %></option>
+               <% }) %>
+            </select>
+            <select id="end">
+               <option value="">Destination</option>
+               <% _.each(Routes, function (Route) { %>
+                    <option value="<%= Route.destination %>"><%= Route.name %></option>
+               <% }) %>
+            </select>
+            <button id="boton" class="btn btn-primary" onclick="onChangeHandler()">Trace route</button>
+            <button id="boton" class="btn btn-primary" onclick="ejecutarViaje()">Start trip</button>
+         </div>
+         <div class="col-md-12">
+           <div id="map" style="height: 500px;width: 100%;"></div>
+         </div>
+      </div>
+   </body>
+</html>
+<script type="text/javascript">
+   //Mapa
+   var PuntosEnMapa;
+       var marker;
+       var onChangeHandler;
+       var ejecutarViaje;
+       var maletin = "/images/icono.png";
+       function initMap() {
+         var directionsService = new google.maps.DirectionsService;
+         var directionsDisplay = new google.maps.DirectionsRenderer;
+         var myLatLng = document.getElementById('start').value;
+         var map = new google.maps.Map(document.getElementById('map'), {
+           zoom: 7,
+           center: {lat: 32.530725, lng:-117.034905}
+         });
+         directionsDisplay.setMap(map);
+         
+         marker = new google.maps.Marker({
+                 position: myLatLng,
+                 map: map,
+                 draggable: true,
+                 animation: google.maps.Animation.DROP,
+                 title: 'Maletin',
+                 icon: maletin
+               });
+         
+         onChangeHandler = function() {
+          
+           calculateAndDisplayRoute(directionsService, directionsDisplay);
+         };
+
+         ejecutarViaje = function () {
+         	inicio();
+         	viaje(directionsService, directionsDisplay);
+         }
+         /*document.getElementById('start').addEventListener('change', onChangeHandler);
+         document.getElementById('end').addEventListener('change', onChangeHandler);*/
+
+         marker.addListener('click', toggleBounce);
+
+          
+      }
+       // Adds a marker to the map.
+      function addMarker(location, map) {
+        var marker = new google.maps.Marker({
+        		 position: location,
+                 map: map,
+                 draggable: true,
+                 animation: google.maps.Animation.DROP,
+                 title: 'Viaje Finalizado',
+                 icon: maletin
+        });
+      }
+     
+       
+       function toggleBounce() {
+         if (marker.getAnimation() !== null) {
+           marker.setAnimation(null);
+         } else {
+           marker.setAnimation(google.maps.Animation.BOUNCE);
+         }
+       }
+       function viaje(directionsService, directionsDisplay){
+       	directionsService.route({
+           origin: document.getElementById('start').value,
+           destination: document.getElementById('end').value,
+           travelMode: 'DRIVING'
+         }, function(response, status) {
+           if (status === 'OK') {
+             directionsDisplay.setDirections(response);
+             	PuntosEnMapa = response.routes[0].overview_path;
+             var c = 0;
+   			   
+               window.setInterval(function () {
+               	if(c==PuntosEnMapa.length){
+               		addMarker(PuntosEnMapa[PuntosEnMapa.length-1], map);
+               	}else{
+                 marker.setPosition(PuntosEnMapa[c]);
+             }
+
+                 c++;
+               },1000);
+           } else {
+             window.alert('Directions request failed due to ' + status);
+           }
+         });
+       
+       }
+       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+   
+         directionsService.route({
+           origin: document.getElementById('start').value,
+           destination: document.getElementById('end').value,
+           travelMode: 'DRIVING'
+         }, function(response, status) {
+           if (status === 'OK') {
+             directionsDisplay.setDirections(response);
+             
+           } else {
+             window.alert('Directions request failed due to ' + status);
+           }
+         });
+       }
+    //grafica
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawBasic);
+    
+    function drawBasic(arrayX,arrayY) {
+    
+         var data = new google.visualization.DataTable();
+         data.addColumn('number', 'X');
+         data.addColumn('number', 'Velocidad');
+    for (var x = 0; x < arrayX.length; x++) { 
+    
+         data.addRows([
+          
+          [arrayX[x], arrayY[x]]
+      
+           
+         ]);
+     }
+    
+         var options = {
+           hAxis: {
+             title: 'Time'
+           },
+           vAxis: {
+             title: 'Speed'
+           }
+         };
+    
+         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    
+         chart.draw(data, options);
+       }
+       //simulador de velocidades
+    function inicio(){
+        var contador=0,contador2=0,numerador=0,numero=0;
+        var arrayX = [];
+        var arrayY = [];
+        window.setInterval(function () {
+          
+          numero = Math.round(Math.random()*(10-0)+parseInt(0));
+          if(contador<10){
+            numerador = numerador+numero;
+          }else{
+            numerador = numerador-numero;
+            if(numerador<0){
+              numerador=0;
+            }
+          }
+                $("table").append( "<tr><td>"+numerador+" k/m</td></tr>" );
+                if(contador==20){
+                  contador=0;
+                }
+                arrayX.push(contador2);
+                arrayY.push(numerador);
+                contador++;
+                contador2++;
+                drawBasic(arrayX,arrayY);
+                }, 1000 );
+    
+    }
+     
+
+    
+</script>
+<script async defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM_6UpiEgzkK2eOSA_OsywoqryFjXBymQ&callback=initMap"></script>

@@ -25,14 +25,19 @@
 
   <body>
     <div id="page-wrap">
-      <header id="page-header" class="navbar navbar-expand-sm navbar-dark bg-dark flex-column flex-md-row justify-content-between">
-        <a class="navbar-brand mr-0" href="/">Smart Security BriefCase</a>
+      <header id="page-header" class="navbar navbar-expand-sm navbar-dark  bg-dark  flex-column flex-md-row justify-content-between">
+        <a class="navbar-brand mr-0" href="/"><img style="height: 100px;" class="" alt="Logo" src="/images/logofinal.png"/></a>
+        
         <div class="navbar-nav flex-row">
           <!-- LOGGED-IN NAVIGATION -->
           <% if(me) { %>
           <!--<a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/contact">Help</a>-->
-          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/Simulador">Simulador</a>
-          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/Maletin">Maletines</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/api/simulator">Simulator</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/api/Clients">Clients</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/api/Maletines">Briefcases</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/api/Routes">Routes</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/">Travels</a>
+          <a class="nav-item nav-link ml-2 ml-md-0 mr-2 mr-md-0" href="/Geolocalization">Geolocalization</a>
           <!-- Only in desktop nav -->
           <div class="nav-item dropdown d-none d-sm-block">
             <a class="nav-link dropdown-toggle" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>

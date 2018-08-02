@@ -162,7 +162,22 @@ email status until they click the link in the confirmation email.`
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    // n/a
+    Maletines:{
+      collection:"Maletin",
+      via:"owner"
+    },
+    Clients:{
+      collection:"Client",
+      via:"owner"
+    },
+    Routes:{
+      collection:"Route",
+      via:"owner"
+    },
+    Travels:{
+      collection:"Travel",
+      via:"owner"
+    }
 
   },
 

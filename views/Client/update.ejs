@@ -1,0 +1,47 @@
+<div id="welcome">
+  <div class="container">
+    <h1>Update Client</h1>
+    <hr/>
+    <div class="buttons">
+      <!--<a class="btn btn-info" href="/account/profile">Update my email</a>-->
+      <!--<button class="btn btn-outline-info ml-2" @click="clickOpenDashboardModalButton()">List Briefcases</button>-->
+      <a class="btn btn-info" href="/api/Clients">List Client</a>
+    </div>
+  </div>
+  <div class="container">
+		<div class="modal-body mx-3">
+			<form method="POST" action="/api/Client/<%= Client.id %>">
+				      <div class="modal-body mx-3">
+				            <div class="md-form mb-5">
+			               <label data-error="wrong" data-success="right" for="defaultForm-email">Name</label>
+			                  <i class="fa fa-address-card-o prefix grey-text"></i>
+			                <input type="text" id="name" name="name" class="form-control validate" value="<%= Client.name %>" placeholder="@name" required="true">  
+			            </div>
+		              <div class="md-form mb-5">
+		                 <label data-error="wrong" data-success="right" for="defaultForm-email">Last Name</label>
+		                    <i class="fa fa-address-card prefix grey-text"></i>
+		                  <input type="text" id="lastName" name="lastName" class="form-control validate" value="<%= Client.lastName %>" placeholder="@lastName" required="true">  
+		              </div>
+		              <div class="md-form mb-5">
+		                 <label data-error="wrong" data-success="right" for="defaultForm-email">Phone Number</label>
+		                    <i class="fa fa-phone prefix grey-text"></i>
+		                  <input type="text" id="phoneNumber" name="phoneNumber" class="form-control validate" value="<%= Client.phoneNumber %>" placeholder="@111-222-3333" required="true">  
+		              </div>
+		              <div class="md-form mb-5">
+		                 <label data-error="wrong" data-success="right" for="defaultForm-email">E-mail</label>
+		                    <i class="fa fa-envelope prefix grey-text"></i>
+		                  <input type="email" id="email" name="email" class="form-control validate" value="<%= Client.email %>" placeholder="example@hotmail.com" required="true">  
+		              </div>
+
+				      	</div>
+			          <div class="d-flex justify-content-center">
+			              <button type="input" class="btn btn-info" value="Create"> Update</button>
+			          </div>
+			</form>
+		</div>
+  </div>
+
+
+
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>
