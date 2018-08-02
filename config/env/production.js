@@ -58,7 +58,8 @@ module.exports = {
       //  sails_datastores__default__url=mysql://admin:myc00lpAssw2D@db.example.com:3306/my_prod_db
       //  ```
       //--------------------------------------------------------------------------
-
+      adapter: require('sails-mongo'),
+      url: "mongodb://ssbAdmin:ssbdb123@ds145649.mlab.com:45649/ssbdb",
       /****************************************************************************
       *                                                                           *
       * More adapter-specific options                                             *
